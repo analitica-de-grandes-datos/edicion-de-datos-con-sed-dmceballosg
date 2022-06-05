@@ -22,7 +22,7 @@
 #    
 #  * Convierta el formato de las fechas de DD/MM/YY a YYYY-MM-DD.
 #  
-#  * Transforme el archivo para que todos los campos nulos aparezcan como `\N`.
+#  * Transforme el archivo para que todos los campos nulos aparezcan como ``.
 #  
 #  * Reemplace los `;` por `,`.
 #  
@@ -41,3 +41,4 @@
 #
 #  >>> Escriba su codigo a partir de este punto <<<
 #
+sed 's/\(\b[0-9]\/\)/0\1/' $1 | sed 's/\/\([0-9]\/\)/\/0\1/' | sed 's/\/\([0-9][0-9]\);/\/20\1;/' | sed 's/\([0-9][0-9]\)\/\([0-9][0-9]\)\/\([0-9][0-9][0-9][0-9]\)/\3-\2-\1/' | sed 's/;\\n/;\\N/' | sed -E 's/(;N|;n)/;\\N/' | sed -E 's/(;;)/;\\N;/' | sed -E 's/(,)/./' | sed -E 's/(;)/,/g' | sed 's/\([a-z]\)/\U\1/' | sed 's/\(,\)\s*$/\1\\\N/'
